@@ -2,6 +2,8 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <utility>
+
 using namespace std;
 
 #define CANT_VALORES 5
@@ -43,19 +45,50 @@ RegValores getValores()
   return r;
 }
 
+vector<pair<int,int>> obPuntos(int n)
+{
+  string scasos, temp;
+  vector<pair<int,int>> vp;
+  int posF;
+  pair<int,int> p;
+
+  for(int i = 0; i < n; i++)
+  { 
+    getline(cin, scasos); 
+    posF   = scasos.find(" ");  
+    temp   = scasos.substr(0, posF);
+    scasos = scasos.substr(posF + 1);
+    stringstream(temp)   >> p.first;
+    stringstream(scasos) >> p.second;
+    vp.push_back(p);
+  }
+
+  return vp;
+}
+
+// Obtener el vector de las distancias.
+
+// vector<int> obtenerDist(vector<pair<int,int>>)
+// {
+//     for (int i = 0; i < 
+// 
+// }
+
+
 int main()
 {
   string scasos;
   int cantCasos;
   RegValores v;
+  vector<pair<int,int>> vp;
 
   getline(cin, scasos); stringstream(scasos) >> cantCasos;
   cout << cantCasos << '\n';
-
+0
   for(int i = 0; i < cantCasos; i++)
   {
-    RegValores v = getValores();
+    v = getValores();
     cout << v.n << " " << v.m << " " << v.r << " " << v.u << " " << v.v << endl;
-    for(int i = 0; i < v.n; i++) { getline(cin, scasos); cout << scasos << endl; }
+    vp = obPuntos(v.n);
   }
 }
