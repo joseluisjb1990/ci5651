@@ -3,6 +3,7 @@
 #include <sstream>
 #include <vector>
 #include <utility>
+#include <math.h>
 
 using namespace std;
 
@@ -17,6 +18,7 @@ struct RegValores
   int v;
 };
 
+/* Funcion que lee la entrada y almacena la informacion del caso */
 RegValores getValores()
 {
   string entrada, temp;
@@ -45,10 +47,11 @@ RegValores getValores()
   return r;
 }
 
-vector<pair<int,int>> obPuntos(int n)
+/* Funcion que obtiene y almacena los puntos de stdin */
+vector< pair<int,int> > obPuntos(int n)
 {
   string scasos, temp;
-  vector<pair<int,int>> vp;
+  vector< pair<int,int> > vp;
   int posF;
   pair<int,int> p;
 
@@ -67,28 +70,48 @@ vector<pair<int,int>> obPuntos(int n)
 }
 
 // Obtener el vector de las distancias.
+// Vector de la forma < d(1,2),..,d(1,n),d(2,3),..,d(2,n),...d(n-1,n) >
 
-// vector<int> obtenerDist(vector<pair<int,int>>)
-// {
-//     for (int i = 0; i < 
-// 
-// }
+vector<float> obtenerDist(vector< pair<int,int> > vp, int n)
+{
+    // Vector que almacena las distancias
+    vector<float> vd;
 
+    // Cálculo y almacenamiento de distancias, costo amortizado.
+    for (int i = 0; i < n-1; i++)
+    {
+        for (int j = i+1; j < n; j++)
+        {
+            vd.push_back(sqrt(pow(vp[i].first-vp[j].first,2) + pow(vp[i].second-vp[j].second,2)));
+        }
+       
+    }
+
+    return vd;
+
+}
 
 int main()
 {
   string scasos;
   int cantCasos;
   RegValores v;
-  vector<pair<int,int>> vp;
+  // Vector que almacena los puntos
+  vector< pair<int,int> > vp;
+  // Vector que almacena las distancias entre los puntos.
+  vector< float > vd;
 
   getline(cin, scasos); stringstream(scasos) >> cantCasos;
   cout << cantCasos << '\n';
-0
+
   for(int i = 0; i < cantCasos; i++)
   {
     v = getValores();
     cout << v.n << " " << v.m << " " << v.r << " " << v.u << " " << v.v << endl;
     vp = obPuntos(v.n);
+    vd = obtenerDist(vp,v.n);
+    for( vector<float>::const_iterator i = vd.begin(); i != vd.end(); ++i)
+        cout << *i << ' ';
+    cout << '\n';
   }
 }
