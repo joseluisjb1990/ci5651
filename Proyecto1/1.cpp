@@ -166,29 +166,23 @@ int main()
     
     sort(vd.begin(), vd.end(), compararNodos); //Ordenamos los nodos de menor a mayor con respecto a las distancias.
 
-    // Aplcamos el algoritmos de Kruskal para buscar el arbol minimo cobertor, guardamos las distancias de los 
-    // vertices seleccionados en el arreglo vecDist
-    float vecDist[v.n - 1];
+    // Aplcamos el algoritmos de Kruskal para buscar el arbol minimo cobertor
     int k = 0;
+    float precioU = 0.0;
+    float precioV = 0.0;
+
     for(vector<NodoDist>::const_iterator itd = vd.begin(); itd != vd.end(); itd++)
     {
       NodoDist temp = *itd;
       if(uf.find(temp.izq) != uf.find(temp.der)) 
       { 
         uf.join(temp.izq, temp.der);
-        vecDist[k++] = temp.dist;
-        if(k == v.n - 1) break; 
+
+        if(temp.dist <= v.r) precioU += temp.dist * v.u;
+        else precioV += temp.dist * v.v;
+        
+        if(++k == v.n - v.m) break; 
       }
-    }
-
-    //Calculamos el costo por metro de usar los cables.
-    float precioU = 0.0;
-    float precioV = 0.0;
-
-    for(int i = 0; i < v.n - v.m; i++)
-    {
-      if(vecDist[i] <= v.r) precioU += vecDist[i] * v.u;
-      else precioV += vecDist[i] * v.v;
     }
 
     cout.setf(ios::fixed, ios::floatfield);
