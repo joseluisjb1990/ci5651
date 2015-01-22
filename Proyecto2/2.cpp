@@ -7,11 +7,76 @@
 
 using namespace std;
 
+struct nodo 
+{
+  int cantNodos;
+  nodo* padre;
+  vector<int> hijos;
+};
+
 struct conexion
 {
   int   prim;
   int   sec;
 };
+
+int dfs(vector<nodo> &vn, nodo &n, nodo &pad)
+{
+
+  n.padre = &pad;
+
+  for(vector<int>::iterator t = n.hijos.begin(); t != n.hijos.end(); t++)
+  {
+    if (&vn[(*t)]!=&pad) {
+      n.cantNodos += dfs(vn,vn[(*t)],n);
+    }
+  }
+
+  return n.cantNodos;
+
+}
+
+int desconectar(vector<nodo> &vn, conexion c)
+{
+  if(&vn[c.prim - 1] == vn[c.sec - 1].padre)
+  {
+    vn[c.prim - 1].cantNodos -= vn[c.sec - 1].cantNodos;
+    vn[c.sec - 1].padre = &vn[c.sec - 1];
+    return vn[c.prim - 1].cantNodos * vn[c.sec - 1].cantNodos;
+  }
+  else
+  {
+    vn[c.sec - 1].cantNodos -= vn[c.prim - 1].cantNodos;
+    vn[c.prim - 1].padre = &vn[c.prim - 1];
+    return vn[c.sec - 1].cantNodos * vn[c.prim - 1].cantNodos;
+  }
+}
+
+// Funcion que inicializa el grafo
+vector<nodo> initGrafo(vector<conexion> vc, int cantNodos)
+{
+  vector<nodo> vn = *(new vector<nodo>());
+
+  for(int i = 0; i< cantNodos; i++) {
+    nodo n;
+    n.cantNodos = 1;
+    n.hijos = *(new vector<int>());
+    vn.push_back(n);
+  }
+
+  for(vector<conexion>::iterator it = vc.begin(); it != vc.end(); it++)
+  {
+    vn.at((*it).prim - 1).hijos.push_back((*it).sec - 1);
+    vn.at((*it).sec - 1).hijos.push_back((*it).prim - 1);
+  }
+
+  vn.at(0).padre = &vn.at(0);
+  dfs(vn,vn.at(0),vn.at(0));
+
+  return vn;
+}
+
+
 
 vector<conexion> getConexiones(int cantConexiones)
 {
@@ -54,18 +119,33 @@ int main()
     {
       cout << vc.at(i).prim << " " << vc.at(i).sec << endl;
     }
-    getline(cin, scasos); stringstream(scasos) >> cantQueries; //Obtenemos la cantidad total de nodos
+
+    vector<nodo> vn = initGrafo(vc,cantNodos);
+    for(vector<nodo>::iterator it = vn.begin(); it != vn.end(); it++)
+    {
+      for(vector<int>::iterator t = (*it).hijos.begin(); t != (*it).hijos.end(); t++)
+      {
+        cout << (*t)+1 << " ";
+      }
+
+      cout << "CN " << (*it).cantNodos << endl;
+    }
+
+    getline(cin, scasos); stringstream(scasos) >> cantQueries; //Obtenemos la cantidad total de queries
     cout << "La cantidad de queries es " << cantQueries << endl;
+    int desc = 0;
     for(int i = 0; i < cantQueries; i++)
     {
       getline(cin, scasos);
       switch (scasos[0])
       {
-        case 'Q' : cout << "Tengo que hacer un query" << endl; break;
+        case 'Q' : cout << desc << endl; break;
         case 'R' :
           int pos;
           pos = scasos.find(" ");
-          cout << "Tengo que romper la conexion" << scasos.substr(pos + 1) << endl;
+          stringstream(scasos.substr(pos + 1)) >> pos;
+          cout << "----------------------------- " << pos << endl;
+          desc += desconectar(vn, vc[pos - 1]);
           break;
       }
     }

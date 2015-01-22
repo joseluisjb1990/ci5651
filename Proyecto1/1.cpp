@@ -187,6 +187,6 @@ int main()
 
     cout.setf(ios::fixed, ios::floatfield);
     cout.precision(3);
-    cout << "Caso #" << h << ": " << precioU << " " << precioV << endl; 
+    cout  << endl << "Caso #" << h + 1 << ": " << precioU << " " << precioV; 
   }
 }
