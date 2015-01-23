@@ -1,9 +1,4 @@
-#include <iostream>
-#include <string>
-#include <sstream>
-#include <vector>
-#include <math.h>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -22,18 +17,12 @@ struct conexion
 
 int dfs(vector<nodo> &vn, nodo &n, nodo &pad)
 {
-
   n.padre = &pad;
-
   for(vector<int>::iterator t = n.hijos.begin(); t != n.hijos.end(); t++)
-  {
-    if (&vn[(*t)]!=&pad) {
+    if (&vn[(*t)] != &pad)
       n.cantNodos += dfs(vn,vn[(*t)],n);
-    }
-  }
 
   return n.cantNodos;
-
 }
 
 int desconectar(vector<nodo> &vn, conexion c)
@@ -71,12 +60,11 @@ vector<nodo> initGrafo(vector<conexion> vc, int cantNodos)
   }
 
   vn.at(0).padre = &vn.at(0);
+
   dfs(vn,vn.at(0),vn.at(0));
 
   return vn;
 }
-
-
 
 vector<conexion> getConexiones(int cantConexiones)
 {
@@ -106,48 +94,29 @@ int main()
   int cantQueries;
 
   getline(cin, scasos); stringstream(scasos) >> cantCasos; //Obtenemos la cantidad total de casos
-  cout << "La cantidad de casos es " << cantCasos << endl;
   
   for(int h = 0; h < cantCasos; h++)
   {
     getline(cin, scasos); // Leemos la linea vacia
     getline(cin, scasos); stringstream(scasos) >> cantNodos; //Obtenemos la cantidad total de nodos
-    cout << "La cantidad de nodos es " << cantNodos << endl;
-
     vector<conexion> vc = getConexiones(cantNodos - 1);  
-    for(int i = 0; i < cantNodos - 1; i++)
-    {
-      cout << vc.at(i).prim << " " << vc.at(i).sec << endl;
-    }
-
     vector<nodo> vn = initGrafo(vc,cantNodos);
-    for(vector<nodo>::iterator it = vn.begin(); it != vn.end(); it++)
-    {
-      for(vector<int>::iterator t = (*it).hijos.begin(); t != (*it).hijos.end(); t++)
-      {
-        cout << (*t)+1 << " ";
-      }
-
-      cout << "CN " << (*it).cantNodos << endl;
-    }
-
     getline(cin, scasos); stringstream(scasos) >> cantQueries; //Obtenemos la cantidad total de queries
-    cout << "La cantidad de queries es " << cantQueries << endl;
     int desc = 0;
     for(int i = 0; i < cantQueries; i++)
     {
       getline(cin, scasos);
       switch (scasos[0])
       {
-        case 'Q' : cout << desc << endl; break;
+        case 'Q' : printf("%d\n", desc); break;
         case 'R' :
           int pos;
           pos = scasos.find(" ");
           stringstream(scasos.substr(pos + 1)) >> pos;
-          cout << "----------------------------- " << pos << endl;
           desc += desconectar(vn, vc[pos - 1]);
           break;
       }
     }
+    printf("%c",'\n');
   }
 }

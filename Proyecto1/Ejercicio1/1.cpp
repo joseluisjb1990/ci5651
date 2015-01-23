@@ -4,12 +4,7 @@
  *
  */
 
-#include <iostream>
-#include <string>
-#include <sstream>
-#include <vector>
-#include <math.h>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -39,13 +34,6 @@ class UnionFind
       int liderIzq = find(izq);
       int liderDer = find(der);
       arrPadres[liderDer] = liderIzq;
-    }
-
-    void print()
-    {
-      cout << endl;
-      for(vector<int>::iterator it = arrPadres.begin(); it != arrPadres.end(); it++) cout << *it << " ";
-      cout << endl;
     }
 };
 
@@ -156,7 +144,7 @@ int main()
 
   getline(cin, scasos); stringstream(scasos) >> cantCasos; //Obtenemos la cantidad total de casos
 
-  for(int h = 0; h < cantCasos; h++)
+  for(int h = 1; h <= cantCasos; h++)
   {
     v = getValores();     //Obtenemos las cantidades n, m, r, u, v
     vp = obPuntos(v.n);   //Leemos la lista de pares de puntos
@@ -185,8 +173,6 @@ int main()
       }
     }
 
-    cout.setf(ios::fixed, ios::floatfield);
-    cout.precision(3);
-    cout  << endl << "Caso #" << h + 1 << ": " << precioU << " " << precioV; 
+    printf("Caso #%d: %.3f %.3f\n", h, precioU, precioV);
   }
 }
