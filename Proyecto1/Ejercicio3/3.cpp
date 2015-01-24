@@ -84,6 +84,6 @@ int main()
 
     int res = cantMaxTareas(vt);
 
-    cout << endl << res;
+    cout << res << endl;
   }
 }
