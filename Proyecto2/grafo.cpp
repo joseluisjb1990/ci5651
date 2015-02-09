@@ -70,7 +70,7 @@ class Grafo
       return mc;
     }
 
-    void Dsatur()
+    int Dsatur()
     {
       int color = 1;
 
@@ -148,5 +148,79 @@ class Grafo
       {
         cout << (*it).first << " " << (*it).second << endl;
       }
+    
+      return color;
     }
-};
+
+    int argoritmo()
+    {
+      vector<int>* maxClique = maximalClique();
+      vector< pair<int, int> >* vm = sortByDegree();
+                
+      int   arrK[vm->size() + 1]; //Arreglo de nodos ordenados por k
+      int   solsParcial[vm->size() + 1]; //Cantidad de colores en la solucion parcial k-1
+      bool  labeled[vm->size() + 1];
+      int w = maxClique->size();
+      int q = Dsatur();
+      vector<int>* Uk[vm->size() + 1];
+      int colores[vm->size() + 1][q];
+      int[vm->size() + 1] nodoColor;
+      
+      for(int i = 1; i <= vm->size(); i++)
+      {
+        for(int j = 1; j <= q; j++)
+          colores[i][j] = 1;
+
+        nodoColor[i] = 0;
+      }
+
+      for(int i = 1; i <= maxClique->size(); i++)
+      {
+        arrK[i] = maxClique->at(i-1);
+        labeled[i] = true;
+        Uk[i] = new vector<int>();
+        solsParcial[i] = w;
+        nodoColor[i] = i;
+      }
+
+      int i = maxClique->size() + 1;
+      for(vector< pair<int, int> >::iterator it = vm->begin(); it != vm->end(); it++)
+      {
+        if(find(maxClique->begin(), maxClique->end(), it->first) == maxClique->end())
+        {
+          arrK[i]     = it->first;
+          labeled[i]  = false;
+          Uk[i++] = new vector<int>();
+        }
+      }
+
+
+
+      int color = 1;      
+      int rank[vm->size()];     // Diccionario de nodo a rango
+
+      int n = vm->size();
+      int s;
+      bool back = false;
+      int k = w + 1;
+       for()
+      
+      while(false)
+      {
+        if(!back)
+        {
+          int uk = solsParcial[k-1];
+          int min;
+          if(uk + 1 < q - 1) min = uk + 1;
+          else              min = q - 1;
+
+          listAdy[arrK[k]]
+
+        } else
+        {
+
+        }
+        // si no back uk es el numero de colores en la solucion parcial 
+      }
+    }
+};  

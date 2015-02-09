@@ -56,4 +56,5 @@ int main ()
   g->print();
   g->maximalClique();
   g->Dsatur();
+  g->argoritmo();
 }
